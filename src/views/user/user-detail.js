@@ -5,7 +5,6 @@ import {
   Col,
   Descriptions,
   Image,
-  PageHeader,
   Row,
   Space,
   Spin,
@@ -13,6 +12,9 @@ import {
   Tag,
   Typography,
 } from 'antd';
+
+
+import {PageHeader} from '@ant-design/pro-layout'
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, PageHeader, Row, Spin } from 'antd';
+import { Button, Col, Form, Typography, Breadcrumb, Row, Spin, Space } from 'antd';
 
 import UserInfo from './user-info';
 import DeliveryInfo from './delivery-info';
@@ -194,7 +194,6 @@ export default function OrderEdit() {
     const body = {
       currency_id: values.currency_id,
       rate: currencies.find((item) => item.id === values.currency_id)?.rate,
-      // shop_id: data.shop.value,
       delivery_fee: data.delivery_fee,
       tax: total.order_tax,
       payment_type: values.payment_type?.label,
@@ -239,33 +238,25 @@ export default function OrderEdit() {
 
   return (
     <>
-      <PageHeader
-        title={t('edit.order')}
-        extra={
-          <Button
-            type='primary'
-            loading={loadingBtn}
-            onClick={() => form.submit()}
-            disabled={!orderProducts?.length}
-          >
-            {t('save')}
-          </Button>
-        }
-      />
+      <Row justify="space-between" align="middle">
+        <Typography.Title level={4}>{t('edit.order')}</Typography.Title>
+        <Button
+          type="primary"
+          loading={loadingBtn}
+          onClick={() => form.submit()}
+          disabled={!orderProducts?.length}
+        >
+          {t('save')}
+        </Button>
+      </Row>
       <Form
-        name='order-form'
+        name="order-form"
         form={form}
-        layout='vertical'
+        layout="vertical"
         onFinish={onFinish}
-        className='order-add'
-        initialValues={{
-          user: data.user || undefined,
-          address: data.address || null,
-          currency_id: data?.currency?.id,
-          payment_type: data.payment_type || null,
-        }}
+        className="order-add"
       >
-        <Row gutter={24} hidden={loading}>
+        <Row gutter={24}>
           <Col span={16}>
             <ProductInfo form={form} />
           </Col>
@@ -275,17 +266,8 @@ export default function OrderEdit() {
             <TransactionDetails form={form} />
           </Col>
         </Row>
-        {loading && (
-          <div className='loader'>
-            <Spin />
-          </div>
-        )}
       </Form>
-      {orderId ? (
-        <PreviewInfo orderId={orderId} handleClose={handleCloseInvoice} />
-      ) : (
-        ''
-      )}
+      {orderId && <PreviewInfo orderId={orderId} handleClose={handleCloseInvoice} />}
     </>
   );
 }

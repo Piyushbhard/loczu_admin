@@ -22,7 +22,7 @@ export const DYNAMIC_LINK_DOMAIN = '';
 export const ANDROID_PACKAGE_NAME = '';
 export const IOS_BUNDLE_ID = '';
 
-export const RECAPTCHASITEKEY = '';
+export const RECAPTCHASITEKEY = '6LdJ580qAAAAAOy2URla8o1Cl3aYitZwHXWHpWWR';
 
 export const DEMO_SELLER = 107; // seller_id
 export const DEMO_SELLER_UUID = '3566bdf6-3a09-4488-8269-70a19f871bd0'; // seller_id

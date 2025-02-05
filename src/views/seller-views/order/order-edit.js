@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Form, PageHeader, Row, Col, Button, Spin } from 'antd';
+import { Form, Row, Col, Button, Spin } from 'antd';
+import {PageHeader} from "@ant-design/pro-components"
 
 import UserInfo from './user-info';
 import ProductInfo from './product-info';

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'antd';
 import ApexChart from 'react-apexcharts';
-import ReactResizeDetector from 'react-resize-detector';
+import { useResizeDetector } from 'react-resize-detector';
 import {
   apexAreaChartDefaultOption,
   apexBarChartDefaultOption,
@@ -53,36 +53,33 @@ const ChartWidget = ({
   bodyClass,
 }) => {
   let options = JSON.parse(JSON.stringify(getChartTypeDefaultOption(type)));
-
   const isMobile = window.innerWidth < 768;
+
+  const extraRef = useRef(null);
+  const chartRef = useRef();
+
   const setLegendOffset = () => {
     if (chartRef.current) {
-      const lengend = chartRef.current.querySelectorAll(
-        'div.apexcharts-legend'
-      )[0];
-      lengend.style.marginRight = `${
-        isMobile ? 0 : extraRef.current?.offsetWidth
-      }px`;
-      if (direction === DIR_RTL) {
-        lengend.style.right = 'auto';
-        lengend.style.left = '0';
-      }
-      if (isMobile) {
-        lengend.style.position = 'relative';
-        lengend.style.top = 0;
-        lengend.style.justifyContent = 'start';
-        lengend.style.padding = 0;
+      const legend = chartRef.current.querySelector('div.apexcharts-legend');
+      if (legend) {
+        legend.style.marginRight = `${isMobile ? 0 : extraRef.current?.offsetWidth}px`;
+        if (direction === DIR_RTL) {
+          legend.style.right = 'auto';
+          legend.style.left = '0';
+        }
+        if (isMobile) {
+          legend.style.position = 'relative';
+          legend.style.top = 0;
+          legend.style.justifyContent = 'start';
+          legend.style.padding = 0;
+        }
       }
     }
   };
 
   useEffect(() => {
     setLegendOffset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const extraRef = useRef(null);
-  const chartRef = useRef();
 
   options.xaxis = {
     categories: xAxis,
@@ -97,8 +94,10 @@ const ChartWidget = ({
     }, 600);
   };
 
+  const { ref } = useResizeDetector({ onResize });
+
   const renderChart = () => (
-    <ReactResizeDetector onResize={onResize()}>
+    <div ref={ref}>
       <div
         style={direction === DIR_RTL ? { direction: 'ltr' } : {}}
         className='chartRef'
@@ -112,7 +111,7 @@ const ChartWidget = ({
           height={height}
         />
       </div>
-    </ReactResizeDetector>
+    </div>
   );
 
   return (
@@ -120,11 +119,8 @@ const ChartWidget = ({
       {card ? (
         <Card>
           <div className={`position-relative ${bodyClass}`}>
-            {<div style={!isMobile ? titleStyle : {}}>{title}</div> && (
-              <h4
-                className='font-weight-bold'
-                style={!isMobile ? titleStyle : {}}
-              >
+            {title && (
+              <h4 className='font-weight-bold' style={!isMobile ? titleStyle : {}}>
                 {title}
               </h4>
             )}
